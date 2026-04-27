@@ -3,21 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dry Cleaning Store API</title>
+    <title>Dry Cleaning Store</title>
     <style>
       :root {
         color-scheme: light;
-        --bg: #0f172a;
-        --bg-2: #111827;
-        --card: rgba(255, 255, 255, 0.08);
-        --card-strong: rgba(255, 255, 255, 0.12);
+        --bg: #0b1220;
+        --panel: rgba(15, 23, 42, 0.84);
+        --panel-2: rgba(15, 23, 42, 0.68);
+        --line: rgba(148, 163, 184, 0.2);
         --text: #f8fafc;
         --muted: #cbd5e1;
-        --line: rgba(255, 255, 255, 0.14);
         --accent: #22c55e;
         --accent-2: #38bdf8;
         --warn: #f59e0b;
-        --shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+        --danger: #fb7185;
+        --shadow: 0 24px 70px rgba(2, 6, 23, 0.45);
       }
 
       * {
@@ -34,30 +34,38 @@
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--text);
         background:
-          radial-gradient(circle at top left, rgba(34, 197, 94, 0.22), transparent 28%),
-          radial-gradient(circle at top right, rgba(56, 189, 248, 0.18), transparent 24%),
+          radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.18), transparent 22%),
+          radial-gradient(circle at 85% 0%, rgba(34, 197, 94, 0.18), transparent 20%),
           linear-gradient(180deg, #0f172a 0%, #111827 100%);
       }
 
       .shell {
-        width: min(1120px, calc(100% - 32px));
+        width: min(1160px, calc(100% - 28px));
         margin: 0 auto;
-        padding: 32px 0 48px;
+        padding: 28px 0 44px;
       }
 
       .hero {
         display: grid;
-        gap: 24px;
-        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.8fr);
-        align-items: start;
+        gap: 18px;
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.75fr);
       }
 
       .hero-card,
-      .panel,
-      .route-card,
-      .snippet {
-        background: var(--card);
+      .card,
+      .output,
+      .row,
+      .badge,
+      input,
+      textarea,
+      button {
         border: 1px solid var(--line);
+      }
+
+      .hero-card,
+      .card,
+      .output {
+        background: var(--panel);
         border-radius: 24px;
         box-shadow: var(--shadow);
         backdrop-filter: blur(18px);
@@ -69,29 +77,29 @@
 
       .eyebrow {
         display: inline-flex;
+        gap: 10px;
         align-items: center;
-        gap: 8px;
         padding: 8px 12px;
         border-radius: 999px;
-        background: rgba(34, 197, 94, 0.14);
-        color: #bbf7d0;
+        background: rgba(56, 189, 248, 0.13);
+        color: #bae6fd;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }
 
-      .eyebrow-dot {
+      .dot {
         width: 8px;
         height: 8px;
         border-radius: 50%;
         background: var(--accent);
-        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.14);
+        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.15);
       }
 
       h1 {
-        margin: 18px 0 14px;
-        font-size: clamp(2.4rem, 5vw, 4.5rem);
+        margin: 18px 0 12px;
+        font-size: clamp(2.4rem, 5vw, 4.4rem);
         line-height: 0.98;
         letter-spacing: -0.05em;
       }
@@ -100,62 +108,169 @@
         margin: 0;
         max-width: 62ch;
         color: var(--muted);
-        font-size: 1.02rem;
         line-height: 1.7;
+        font-size: 1rem;
       }
 
-      .metrics {
-        margin-top: 26px;
+      .mini-grid {
+        margin-top: 24px;
         display: grid;
-        gap: 14px;
+        gap: 12px;
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
-      .metric {
+      .mini {
         padding: 16px;
         border-radius: 18px;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.05);
       }
 
-      .metric-label {
+      .mini-label {
         font-size: 12px;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
         color: #93c5fd;
         margin-bottom: 8px;
+        font-weight: 800;
       }
 
-      .metric-value {
+      .mini-value {
         font-size: 18px;
-        font-weight: 700;
+        font-weight: 800;
       }
 
-      .panel {
-        padding: 22px;
+      .side {
+        display: grid;
+        gap: 18px;
       }
 
-      .panel h2,
+      .card {
+        padding: 18px;
+      }
+
+      .card h2,
       .section h2 {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
         font-size: 1.05rem;
         letter-spacing: -0.02em;
       }
 
-      .panel p,
+      .card p,
       .section p,
-      .route-body,
-      .snippet-title,
-      .helper {
+      .hint,
+      .output-title,
+      .small {
         margin: 0;
         color: var(--muted);
         line-height: 1.6;
       }
 
-      .route-tools {
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      a.button,
+      button.button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        font: inherit;
+        font-weight: 800;
+        border-radius: 999px;
+        padding: 11px 15px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      }
+
+      button.button,
+      a.button {
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--text);
+      }
+
+      .button.primary {
+        background: linear-gradient(135deg, var(--accent), #16a34a);
+        color: #052e16;
+        box-shadow: 0 12px 24px rgba(34, 197, 94, 0.22);
+      }
+
+      .button.blue {
+        background: linear-gradient(135deg, var(--accent-2), #0ea5e9);
+        color: #082f49;
+        box-shadow: 0 12px 24px rgba(56, 189, 248, 0.2);
+      }
+
+      .button.amber {
+        background: linear-gradient(135deg, #fbbf24, var(--warn));
+        color: #451a03;
+        box-shadow: 0 12px 24px rgba(245, 158, 11, 0.18);
+      }
+
+      .button.red {
+        background: linear-gradient(135deg, #fb7185, var(--danger));
+        color: #4c0519;
+        box-shadow: 0 12px 24px rgba(251, 113, 133, 0.18);
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .section {
+        margin-top: 18px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .output {
+        margin-top: 14px;
+        padding: 16px;
+        min-height: 170px;
+        background: var(--panel-2);
+      }
+
+      .output-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.08);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #e2e8f0;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .form {
         display: grid;
         gap: 14px;
-        margin-top: 18px;
+        margin-top: 14px;
       }
 
       .field {
@@ -168,175 +283,76 @@
         text-transform: uppercase;
         letter-spacing: 0.12em;
         color: #bfdbfe;
-        font-weight: 700;
+        font-weight: 800;
       }
 
-      .field input {
+      input,
+      textarea {
         width: 100%;
-        border: 1px solid var(--line);
         border-radius: 14px;
-        padding: 12px 14px;
-        background: rgba(15, 23, 42, 0.75);
+        background: rgba(2, 6, 23, 0.35);
         color: var(--text);
+        padding: 12px 14px;
         outline: none;
       }
 
-      .field input:focus {
-        border-color: rgba(56, 189, 248, 0.8);
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16);
+      textarea {
+        min-height: 96px;
+        resize: vertical;
       }
 
-      .buttons {
-        display: flex;
-        flex-wrap: wrap;
+      input:focus,
+      textarea:focus {
+        border-color: rgba(56, 189, 248, 0.85);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+      }
+
+      .garment-row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.6fr auto;
+        gap: 10px;
+        align-items: end;
+      }
+
+      .garment-list {
+        display: grid;
         gap: 10px;
       }
 
-      .route-button,
-      .ghost-button {
-        appearance: none;
-        border: 0;
-        border-radius: 999px;
-        padding: 11px 15px;
+      .row-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .muted-link {
+        color: #93c5fd;
         text-decoration: none;
-        font-weight: 700;
-        cursor: pointer;
-        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      }
-
-      .route-button {
-        background: linear-gradient(135deg, var(--accent), #16a34a);
-        color: #052e16;
-        box-shadow: 0 10px 24px rgba(34, 197, 94, 0.24);
-      }
-
-      .route-button.secondary {
-        background: linear-gradient(135deg, var(--accent-2), #0ea5e9);
-        color: #082f49;
-        box-shadow: 0 10px 24px rgba(56, 189, 248, 0.22);
-      }
-
-      .route-button.warn {
-        background: linear-gradient(135deg, #fbbf24, var(--warn));
-        color: #451a03;
-        box-shadow: 0 10px 24px rgba(245, 158, 11, 0.22);
-      }
-
-      .ghost-button {
-        background: rgba(255, 255, 255, 0.06);
-        color: var(--text);
-        border: 1px solid var(--line);
-      }
-
-      .route-button:hover,
-      .ghost-button:hover {
-        transform: translateY(-1px);
-      }
-
-      .stack {
-        display: grid;
-        gap: 18px;
-        margin-top: 22px;
-      }
-
-      .section {
-        margin-top: 26px;
-      }
-
-      .route-grid {
-        display: grid;
-        gap: 14px;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      }
-
-      .route-card {
-        padding: 18px;
-      }
-
-      .route-top {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        align-items: start;
-      }
-
-      .method {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-      }
-
-      .get {
-        background: rgba(34, 197, 94, 0.15);
-        color: #86efac;
-      }
-
-      .post {
-        background: rgba(56, 189, 248, 0.15);
-        color: #7dd3fc;
-      }
-
-      .patch {
-        background: rgba(245, 158, 11, 0.16);
-        color: #fcd34d;
-      }
-
-      .route-path {
-        margin: 12px 0 10px;
-        font-size: 1.08rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-      }
-
-      .route-actions {
-        margin-top: 14px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .snippets {
-        margin-top: 18px;
-        display: grid;
-        gap: 14px;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      }
-
-      .snippet {
-        padding: 18px;
-      }
-
-      .snippet-title {
-        color: #bfdbfe;
-        margin-bottom: 12px;
-        font-weight: 700;
-      }
-
-      pre {
-        margin: 0;
-        white-space: pre-wrap;
-        word-break: break-word;
-        color: #e2e8f0;
-        font-size: 13px;
-        line-height: 1.6;
       }
 
       .footer {
-        margin-top: 22px;
+        margin-top: 18px;
         color: var(--muted);
         font-size: 14px;
       }
 
-      @media (max-width: 860px) {
+      @media (max-width: 920px) {
         .hero {
           grid-template-columns: 1fr;
         }
 
-        .metrics {
+        .mini-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .shell {
+          width: min(100% - 18px, 1160px);
+          padding: 16px 0 30px;
+        }
+
+        .garment-row {
           grid-template-columns: 1fr;
         }
       }
@@ -346,179 +362,361 @@
     <main class="shell">
       <section class="hero">
         <div class="hero-card">
-          <span class="eyebrow"><span class="eyebrow-dot"></span>Dry Cleaning Store API</span>
-          <h1>Open the routes, create orders, and track work in one place.</h1>
+          <span class="eyebrow"><span class="dot"></span>Dry Cleaning Store</span>
+          <h1>Fast UI for health, dashboard, orders, and create order.</h1>
           <p class="lede">
-            This tiny frontend is a route hub for the backend. The browser-openable endpoints are one click away,
-            and the write routes are shown with ready-to-use request examples.
+            Use the panels below to call the live backend, inspect responses, and create new orders without leaving the page.
           </p>
 
-          <div class="metrics" aria-label="Key facts">
-            <div class="metric">
-              <div class="metric-label">Storage</div>
-              <div class="metric-value">In-memory</div>
+          <div class="mini-grid">
+            <div class="mini">
+              <div class="mini-label">Storage</div>
+              <div class="mini-value">SQLite</div>
             </div>
-            <div class="metric">
-              <div class="metric-label">Statuses</div>
-              <div class="metric-value">4-step workflow</div>
+            <div class="mini">
+              <div class="mini-label">API</div>
+              <div class="mini-value">Express</div>
             </div>
-            <div class="metric">
-              <div class="metric-label">Pricing</div>
-              <div class="metric-value">Hardcoded config</div>
+            <div class="mini">
+              <div class="mini-label">Workflow</div>
+              <div class="mini-value">4 statuses</div>
             </div>
           </div>
         </div>
 
-        <aside class="panel">
-          <h2>Open a route</h2>
-          <p>Use the buttons below to open the live API paths directly in your browser.</p>
+        <div class="side">
+          <article class="card">
+            <h2>Quick routes</h2>
+            <p>Open the direct endpoints or jump to the live panels below.</p>
+            <div class="actions">
+              <a class="button primary" href="#health">Health</a>
+              <a class="button blue" href="#dashboard">Dashboard</a>
+              <a class="button amber" href="#orders">Orders</a>
+              <a class="button red" href="#create-order">Create order</a>
+            </div>
+          </article>
 
-          <div class="route-tools">
+          <article class="card">
+            <h2>Sample order ID</h2>
+            <p>Use this field to open a specific order endpoint if you already have one.</p>
+            <div class="form">
+              <div class="field">
+                <label for="orderIdInput">Order ID</label>
+                <input id="orderIdInput" value="ORD-EXAMPLE" />
+              </div>
+              <div class="actions">
+                <a class="button" id="openOrderBtn" href="/orders/ORD-EXAMPLE">Open /orders/:orderId</a>
+                <a class="button" id="openStatusBtn" href="/orders/ORD-EXAMPLE/status">Open status route</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section grid">
+        <article class="card" id="health">
+          <div class="output-head">
+            <div>
+              <h2>Health</h2>
+              <p>Check if the API is running.</p>
+            </div>
+            <span class="badge">GET /health</span>
+          </div>
+          <div class="actions">
+            <button class="button primary" id="healthBtn" type="button">Run health check</button>
+          </div>
+          <div class="output">
+            <div class="output-head">
+              <span class="output-title">Response</span>
+              <span class="small" id="healthStatus">Idle</span>
+            </div>
+            <pre id="healthOutput">Click the button to load /health.</pre>
+          </div>
+        </article>
+
+        <article class="card" id="dashboard">
+          <div class="output-head">
+            <div>
+              <h2>Dashboard</h2>
+              <p>See total orders, revenue, and counts by status.</p>
+            </div>
+            <span class="badge">GET /dashboard</span>
+          </div>
+          <div class="actions">
+            <button class="button blue" id="dashboardBtn" type="button">Load dashboard</button>
+          </div>
+          <div class="output">
+            <div class="output-head">
+              <span class="output-title">Response</span>
+              <span class="small" id="dashboardStatus">Idle</span>
+            </div>
+            <pre id="dashboardOutput">Click the button to load /dashboard.</pre>
+          </div>
+        </article>
+
+        <article class="card" id="orders">
+          <div class="output-head">
+            <div>
+              <h2>Orders</h2>
+              <p>List orders and optionally filter by status, customer, or phone.</p>
+            </div>
+            <span class="badge">GET /orders</span>
+          </div>
+          <div class="form">
             <div class="field">
-              <label for="orderIdInput">Order ID for dynamic routes</label>
-              <input id="orderIdInput" value="ORD-EXAMPLE" aria-label="Order ID" />
+              <label for="statusFilter">Status</label>
+              <input id="statusFilter" placeholder="RECEIVED, PROCESSING, READY, DELIVERED" />
             </div>
-
-            <div class="buttons">
-              <a class="route-button" href="/">/</a>
-              <a class="route-button" href="/health">/health</a>
-              <a class="route-button secondary" href="/dashboard">/dashboard</a>
-              <a class="route-button secondary" href="/meta">/meta</a>
-              <a class="ghost-button" id="openOrders">/orders/:orderId</a>
-              <a class="ghost-button" id="openStatus">/orders/:orderId/status</a>
+            <div class="field">
+              <label for="nameFilter">Customer name</label>
+              <input id="nameFilter" placeholder="Amit" />
             </div>
-
-            <div class="buttons">
-              <a class="route-button warn" href="#create-order">POST /orders</a>
-              <a class="route-button warn" href="#update-status">PATCH /orders/:orderId/status</a>
+            <div class="field">
+              <label for="phoneFilter">Phone number</label>
+              <input id="phoneFilter" placeholder="9876543210" />
+            </div>
+            <div class="row-actions">
+              <button class="button amber" id="ordersBtn" type="button">Load orders</button>
+              <a class="button" href="/orders">Open raw route</a>
             </div>
           </div>
-        </aside>
+          <div class="output">
+            <div class="output-head">
+              <span class="output-title">Response</span>
+              <span class="small" id="ordersStatus">Idle</span>
+            </div>
+            <pre id="ordersOutput">Click the button to load /orders.</pre>
+          </div>
+        </article>
+
+        <article class="card" id="create-order">
+          <div class="output-head">
+            <div>
+              <h2>Create order</h2>
+              <p>Submit a new dry cleaning order with garments and quantities.</p>
+            </div>
+            <span class="badge">POST /orders</span>
+          </div>
+          <form class="form" id="createOrderForm">
+            <div class="field">
+              <label for="customerName">Customer name</label>
+              <input id="customerName" required placeholder="Amit Sharma" />
+            </div>
+            <div class="field">
+              <label for="phoneNumber">Phone number</label>
+              <input id="phoneNumber" required placeholder="9876543210" />
+            </div>
+
+            <div>
+              <div class="output-head" style="margin-bottom: 10px;">
+                <span class="output-title">Garments</span>
+                <button class="button" id="addGarmentBtn" type="button">Add garment</button>
+              </div>
+              <div class="garment-list" id="garmentList"></div>
+            </div>
+
+            <div class="row-actions">
+              <button class="button red" type="submit">Create order</button>
+              <button class="button" id="fillExampleBtn" type="button">Fill example</button>
+            </div>
+          </form>
+          <div class="output">
+            <div class="output-head">
+              <span class="output-title">Response</span>
+              <span class="small" id="createStatus">Idle</span>
+            </div>
+            <pre id="createOutput">Submit the form to post a new order.</pre>
+          </div>
+        </article>
       </section>
 
-      <section class="section">
-        <h2>All paths</h2>
-        <p>Each card below shows the method, path, and a direct action.</p>
-
-        <div class="route-grid">
-          <article class="route-card">
-            <div class="route-top">
-              <span class="method get">GET</span>
-              <span class="helper">Status check</span>
-            </div>
-            <div class="route-path">/health</div>
-            <div class="route-body">Returns a simple health response for uptime checks.</div>
-            <div class="route-actions"><a class="route-button" href="/health">Open</a></div>
-          </article>
-
-          <article class="route-card">
-            <div class="route-top">
-              <span class="method get">GET</span>
-              <span class="helper">Dashboard</span>
-            </div>
-            <div class="route-path">/dashboard</div>
-            <div class="route-body">Shows total orders, revenue, and counts by status.</div>
-            <div class="route-actions"><a class="route-button secondary" href="/dashboard">Open</a></div>
-          </article>
-
-          <article class="route-card">
-            <div class="route-top">
-              <span class="method get">GET</span>
-              <span class="helper">Metadata</span>
-            </div>
-            <div class="route-path">/meta</div>
-            <div class="route-body">Returns the supported order statuses.</div>
-            <div class="route-actions"><a class="route-button secondary" href="/meta">Open</a></div>
-          </article>
-
-          <article class="route-card">
-            <div class="route-top">
-              <span class="method get">GET</span>
-              <span class="helper">List orders</span>
-            </div>
-            <div class="route-path">/orders</div>
-            <div class="route-body">Lists all orders and supports filters for status, customer name, and phone number.</div>
-            <div class="route-actions"><a class="route-button" href="/orders">Open</a></div>
-          </article>
-
-          <article class="route-card">
-            <div class="route-top">
-              <span class="method get">GET</span>
-              <span class="helper">Single order</span>
-            </div>
-            <div class="route-path">/orders/:orderId</div>
-            <div class="route-body">Use the input above to open a specific order path.</div>
-            <div class="route-actions"><button class="ghost-button" id="cardOpenOrder">Open</button></div>
-          </article>
-
-          <article class="route-card">
-            <div class="route-top">
-              <span class="method post">POST</span>
-              <span class="helper">Create order</span>
-            </div>
-            <div class="route-path">/orders</div>
-            <div class="route-body">Create a new order with customer details and garments.</div>
-            <div class="route-actions"><a class="route-button warn" href="#create-order">View request</a></div>
-          </article>
-
-          <article class="route-card">
-            <div class="route-top">
-              <span class="method patch">PATCH</span>
-              <span class="helper">Update status</span>
-            </div>
-            <div class="route-path">/orders/:orderId/status</div>
-            <div class="route-body">Move an order forward through the workflow.</div>
-            <div class="route-actions"><button class="ghost-button" id="cardOpenStatus">View request</button></div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <h2>Request examples</h2>
-        <p>These snippets match the write routes and are ready to paste into curl or your API client.</p>
-
-        <div class="snippets">
-          <article class="snippet" id="create-order">
-            <div class="snippet-title">POST /orders</div>
-<pre>{
-  "customerName": "Amit Sharma",
-  "phoneNumber": "9876543210",
-  "garments": [
-    { "type": "shirt", "quantity": 3 },
-    { "type": "pants", "quantity": 2 }
-  ]
-}</pre>
-          </article>
-
-          <article class="snippet" id="update-status">
-            <div class="snippet-title">PATCH /orders/:orderId/status</div>
-<pre>{
-  "status": "PROCESSING"
-}</pre>
-          </article>
-        </div>
-      </section>
-
-      <div class="footer">Tip: replace the sample order ID with a real one after you create your first order.</div>
+      <div class="footer">
+        Tip: after creating an order, copy the returned order ID and use the order route buttons above.
+      </div>
     </main>
 
     <script>
+      const apiBase = "";
       const orderIdInput = document.getElementById("orderIdInput");
-      const openOrders = document.getElementById("openOrders");
-      const openStatus = document.getElementById("openStatus");
-      const cardOpenOrder = document.getElementById("cardOpenOrder");
-      const cardOpenStatus = document.getElementById("cardOpenStatus");
+      const openOrderBtn = document.getElementById("openOrderBtn");
+      const openStatusBtn = document.getElementById("openStatusBtn");
+      const healthBtn = document.getElementById("healthBtn");
+      const dashboardBtn = document.getElementById("dashboardBtn");
+      const ordersBtn = document.getElementById("ordersBtn");
+      const createOrderForm = document.getElementById("createOrderForm");
+      const garmentList = document.getElementById("garmentList");
+      const addGarmentBtn = document.getElementById("addGarmentBtn");
+      const fillExampleBtn = document.getElementById("fillExampleBtn");
 
-      function openRoute(template) {
-        const orderId = encodeURIComponent(orderIdInput.value.trim() || "ORD-EXAMPLE");
-        const path = template.replace(":orderId", orderId);
-        window.location.href = path;
+      const statusFields = {
+        health: document.getElementById("healthStatus"),
+        dashboard: document.getElementById("dashboardStatus"),
+        orders: document.getElementById("ordersStatus"),
+        create: document.getElementById("createStatus"),
+      };
+
+      const outputFields = {
+        health: document.getElementById("healthOutput"),
+        dashboard: document.getElementById("dashboardOutput"),
+        orders: document.getElementById("ordersOutput"),
+        create: document.getElementById("createOutput"),
+      };
+
+      const filters = {
+        status: document.getElementById("statusFilter"),
+        customerName: document.getElementById("nameFilter"),
+        phoneNumber: document.getElementById("phoneFilter"),
+      };
+
+      const exampleGarments = [
+        { type: "shirt", quantity: 2 },
+        { type: "pants", quantity: 1 },
+      ];
+
+      function pretty(value) {
+        return JSON.stringify(value, null, 2);
       }
 
-      openOrders.addEventListener("click", () => openRoute("/orders/:orderId"));
-      openStatus.addEventListener("click", () => openRoute("/orders/:orderId/status"));
-      cardOpenOrder.addEventListener("click", () => openRoute("/orders/:orderId"));
-      cardOpenStatus.addEventListener("click", () => document.getElementById("update-status").scrollIntoView({ behavior: "smooth", block: "start" }));
+      function setResult(section, status, data) {
+        statusFields[section].textContent = status;
+        outputFields[section].textContent = typeof data === "string" ? data : pretty(data);
+      }
+
+      async function requestJSON(url, options = {}) {
+        const response = await fetch(apiBase + url, {
+          headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+          ...options,
+        });
+        const text = await response.text();
+        let payload;
+        try {
+          payload = text ? JSON.parse(text) : {};
+        } catch {
+          payload = text;
+        }
+        if (!response.ok) {
+          const message = payload && payload.message ? payload.message : `Request failed with status ${response.status}`;
+          throw new Error(message);
+        }
+        return payload;
+      }
+
+      function syncOrderLinks() {
+        const orderId = encodeURIComponent(orderIdInput.value.trim() || "ORD-EXAMPLE");
+        openOrderBtn.href = `/orders/${orderId}`;
+        openStatusBtn.href = `/orders/${orderId}/status`;
+      }
+
+      function garmentRow(data = {}) {
+        const row = document.createElement("div");
+        row.className = "garment-row";
+        row.innerHTML = `
+          <div class="field">
+            <label>Garment type</label>
+            <input class="garment-type" placeholder="shirt" value="${data.type || ""}" />
+          </div>
+          <div class="field">
+            <label>Quantity</label>
+            <input class="garment-qty" type="number" min="1" step="1" placeholder="1" value="${data.quantity || ""}" />
+          </div>
+          <button class="button" type="button">Remove</button>
+        `;
+
+        row.querySelector("button").addEventListener("click", () => row.remove());
+        return row;
+      }
+
+      function ensureInitialGarments() {
+        if (!garmentList.children.length) {
+          garmentList.appendChild(garmentRow(exampleGarments[0]));
+          garmentList.appendChild(garmentRow(exampleGarments[1]));
+        }
+      }
+
+      async function loadHealth() {
+        setResult("health", "Loading", "Fetching /health...");
+        try {
+          const payload = await requestJSON("/health");
+          setResult("health", "OK", payload);
+        } catch (error) {
+          setResult("health", "Error", error.message);
+        }
+      }
+
+      async function loadDashboard() {
+        setResult("dashboard", "Loading", "Fetching /dashboard...");
+        try {
+          const payload = await requestJSON("/dashboard");
+          setResult("dashboard", "OK", payload);
+        } catch (error) {
+          setResult("dashboard", "Error", error.message);
+        }
+      }
+
+      async function loadOrders() {
+        const params = new URLSearchParams();
+        if (filters.status.value.trim()) params.set("status", filters.status.value.trim());
+        if (filters.customerName.value.trim()) params.set("customerName", filters.customerName.value.trim());
+        if (filters.phoneNumber.value.trim()) params.set("phoneNumber", filters.phoneNumber.value.trim());
+        const query = params.toString() ? `?${params.toString()}` : "";
+        setResult("orders", "Loading", `Fetching /orders${query}...`);
+        try {
+          const payload = await requestJSON(`/orders${query}`);
+          setResult("orders", "OK", payload);
+        } catch (error) {
+          setResult("orders", "Error", error.message);
+        }
+      }
+
+      async function createOrder(event) {
+        event.preventDefault();
+        const garments = Array.from(garmentList.children)
+          .map((row) => ({
+            type: row.querySelector(".garment-type").value.trim(),
+            quantity: Number(row.querySelector(".garment-qty").value),
+          }))
+          .filter((garment) => garment.type);
+
+        const body = {
+          customerName: document.getElementById("customerName").value.trim(),
+          phoneNumber: document.getElementById("phoneNumber").value.trim(),
+          garments,
+        };
+
+        setResult("create", "Submitting", body);
+        try {
+          const payload = await requestJSON("/orders", {
+            method: "POST",
+            body: JSON.stringify(body),
+          });
+          setResult("create", "Created", payload);
+          const orderId = payload && payload.data && payload.data.orderId ? payload.data.orderId : "ORD-EXAMPLE";
+          orderIdInput.value = orderId;
+          syncOrderLinks();
+        } catch (error) {
+          setResult("create", "Error", error.message);
+        }
+      }
+
+      addGarmentBtn.addEventListener("click", () => {
+        garmentList.appendChild(garmentRow());
+      });
+
+      fillExampleBtn.addEventListener("click", () => {
+        document.getElementById("customerName").value = "Amit Sharma";
+        document.getElementById("phoneNumber").value = "9876543210";
+        garmentList.innerHTML = "";
+        exampleGarments.forEach((garment) => garmentList.appendChild(garmentRow(garment)));
+      });
+
+      orderIdInput.addEventListener("input", syncOrderLinks);
+      healthBtn.addEventListener("click", loadHealth);
+      dashboardBtn.addEventListener("click", loadDashboard);
+      ordersBtn.addEventListener("click", loadOrders);
+      createOrderForm.addEventListener("submit", createOrder);
+
+      ensureInitialGarments();
+      syncOrderLinks();
     </script>
   </body>
 </html>

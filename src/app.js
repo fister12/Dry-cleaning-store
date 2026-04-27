@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const { addOrder, listOrders, findOrderById, seedOrders } = require("./store");
+const { addOrder, listOrders, findOrderById, updateOrderStatus } = require("./db");
 const { ORDER_STATUSES } = require("./config");
 const { createOrder, validateStatusTransition, matchesFilters, buildDashboard } = require("./orderService");
 
@@ -62,10 +62,8 @@ app.patch("/orders/:orderId/status", (req, res) => {
     return buildErrorResponse(res, 400, validation.error);
   }
 
-  order.status = validation.status;
-  order.updatedAt = new Date().toISOString();
-
-  return res.json({ success: true, data: order });
+  const updatedOrder = updateOrderStatus(order.orderId, validation.status);
+  return res.json({ success: true, data: updatedOrder });
 });
 
 app.get("/dashboard", (req, res) => {
@@ -81,7 +79,5 @@ app.get("/meta", (req, res) => {
     },
   });
 });
-
-seedOrders([]);
 
 module.exports = app;

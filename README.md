@@ -1,6 +1,6 @@
 # Dry Cleaning Backend
 
-Minimal production-like backend for a dry cleaning store. Built with Express and in-memory storage.
+Minimal production-like backend for a dry cleaning store. Built with Express and SQLite storage.
 
 ## Features
 
@@ -169,5 +169,5 @@ curl "http://localhost:3000/orders?status=RECEIVED&customerName=amit"
 
 ## Notes
 
-- Storage is in-memory, so data resets when the server restarts.
+- Storage uses a local SQLite file, so data persists between restarts.
 - Garment prices are hardcoded in `src/config.js`.
