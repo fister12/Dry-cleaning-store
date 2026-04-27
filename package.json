@@ -2,6 +2,9 @@
   "name": "dry-cleaning-backend",
   "version": "1.0.0",
   "description": "Minimal dry cleaning store backend with SQLite storage",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",

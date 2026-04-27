@@ -170,4 +170,5 @@ curl "http://localhost:3000/orders?status=RECEIVED&customerName=amit"
 ## Notes
 
 - Storage uses a local SQLite file, so data persists between restarts.
+- On Vercel, SQLite falls back to a writable temp file, so data is not persistent there.
 - Garment prices are hardcoded in `src/config.js`.
