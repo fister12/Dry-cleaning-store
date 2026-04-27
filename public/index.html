@@ -472,6 +472,38 @@
               <input id="nameFilter" placeholder="Amit" />
             </div>
             <div class="field">
+        </article>
+
+        <article class="card" id="update-status">
+          <div class="output-head">
+            <div>
+              <h2>Update status</h2>
+              <p>Change an order status with the new PUT route.</p>
+            </div>
+            <span class="badge">PUT /orders/:orderId/status</span>
+          </div>
+          <form class="form" id="updateStatusForm">
+            <div class="field">
+              <label for="statusOrderId">Order ID</label>
+              <input id="statusOrderId" placeholder="ORD-1234ABCD" required />
+            </div>
+            <div class="field">
+              <label for="statusValue">New status</label>
+              <input id="statusValue" placeholder="PROCESSING" required />
+            </div>
+            <div class="row-actions">
+              <button class="button blue" type="submit">Update status</button>
+              <a class="button" href="/meta">See allowed statuses</a>
+            </div>
+          </form>
+          <div class="output">
+            <div class="output-head">
+              <span class="output-title">Response</span>
+              <span class="small" id="statusUpdateState">Idle</span>
+            </div>
+            <pre id="statusUpdateOutput">Submit the form to call the PUT route.</pre>
+          </div>
+        </article>
               <label for="phoneFilter">Phone number</label>
               <input id="phoneFilter" placeholder="9876543210" />
             </div>
@@ -544,6 +576,7 @@
       const dashboardBtn = document.getElementById("dashboardBtn");
       const ordersBtn = document.getElementById("ordersBtn");
       const createOrderForm = document.getElementById("createOrderForm");
+      const updateStatusForm = document.getElementById("updateStatusForm");
       const garmentList = document.getElementById("garmentList");
       const addGarmentBtn = document.getElementById("addGarmentBtn");
       const fillExampleBtn = document.getElementById("fillExampleBtn");
@@ -553,6 +586,7 @@
         dashboard: document.getElementById("dashboardStatus"),
         orders: document.getElementById("ordersStatus"),
         create: document.getElementById("createStatus"),
+        update: document.getElementById("statusUpdateState"),
       };
 
       const outputFields = {
@@ -560,6 +594,7 @@
         dashboard: document.getElementById("dashboardOutput"),
         orders: document.getElementById("ordersOutput"),
         create: document.getElementById("createOutput"),
+        update: document.getElementById("statusUpdateOutput"),
       };
 
       const filters = {
@@ -692,9 +727,27 @@
           setResult("create", "Created", payload);
           const orderId = payload && payload.data && payload.data.orderId ? payload.data.orderId : "ORD-EXAMPLE";
           orderIdInput.value = orderId;
+          document.getElementById("statusOrderId").value = orderId;
           syncOrderLinks();
         } catch (error) {
           setResult("create", "Error", error.message);
+        }
+      }
+
+      async function updateStatus(event) {
+        event.preventDefault();
+        const orderId = document.getElementById("statusOrderId").value.trim();
+        const status = document.getElementById("statusValue").value.trim();
+
+        setResult("update", "Submitting", { orderId, status });
+        try {
+          const payload = await requestJSON(`/orders/${encodeURIComponent(orderId)}/status`, {
+            method: "PUT",
+            body: JSON.stringify({ status }),
+          });
+          setResult("update", "Updated", payload);
+        } catch (error) {
+          setResult("update", "Error", error.message);
         }
       }
 
@@ -714,6 +767,7 @@
       dashboardBtn.addEventListener("click", loadDashboard);
       ordersBtn.addEventListener("click", loadOrders);
       createOrderForm.addEventListener("submit", createOrder);
+      updateStatusForm.addEventListener("submit", updateStatus);
 
       ensureInitialGarments();
       syncOrderLinks();
