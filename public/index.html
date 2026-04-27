@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dry Cleaning Store API</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #0f172a;
+        --bg-2: #111827;
+        --card: rgba(255, 255, 255, 0.08);
+        --card-strong: rgba(255, 255, 255, 0.12);
+        --text: #f8fafc;
+        --muted: #cbd5e1;
+        --line: rgba(255, 255, 255, 0.14);
+        --accent: #22c55e;
+        --accent-2: #38bdf8;
+        --warn: #f59e0b;
+        --shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(34, 197, 94, 0.22), transparent 28%),
+          radial-gradient(circle at top right, rgba(56, 189, 248, 0.18), transparent 24%),
+          linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      }
+
+      .shell {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 32px 0 48px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.8fr);
+        align-items: start;
+      }
+
+      .hero-card,
+      .panel,
+      .route-card,
+      .snippet {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .hero-card {
+        padding: 30px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(34, 197, 94, 0.14);
+        color: #bbf7d0;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.14);
+      }
+
+      h1 {
+        margin: 18px 0 14px;
+        font-size: clamp(2.4rem, 5vw, 4.5rem);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .lede {
+        margin: 0;
+        max-width: 62ch;
+        color: var(--muted);
+        font-size: 1.02rem;
+        line-height: 1.7;
+      }
+
+      .metrics {
+        margin-top: 26px;
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .metric {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .metric-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #93c5fd;
+        margin-bottom: 8px;
+      }
+
+      .metric-value {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .panel {
+        padding: 22px;
+      }
+
+      .panel h2,
+      .section h2 {
+        margin: 0 0 10px;
+        font-size: 1.05rem;
+        letter-spacing: -0.02em;
+      }
+
+      .panel p,
+      .section p,
+      .route-body,
+      .snippet-title,
+      .helper {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .route-tools {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #bfdbfe;
+        font-weight: 700;
+      }
+
+      .field input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: rgba(15, 23, 42, 0.75);
+        color: var(--text);
+        outline: none;
+      }
+
+      .field input:focus {
+        border-color: rgba(56, 189, 248, 0.8);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16);
+      }
+
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .route-button,
+      .ghost-button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 11px 15px;
+        text-decoration: none;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      }
+
+      .route-button {
+        background: linear-gradient(135deg, var(--accent), #16a34a);
+        color: #052e16;
+        box-shadow: 0 10px 24px rgba(34, 197, 94, 0.24);
+      }
+
+      .route-button.secondary {
+        background: linear-gradient(135deg, var(--accent-2), #0ea5e9);
+        color: #082f49;
+        box-shadow: 0 10px 24px rgba(56, 189, 248, 0.22);
+      }
+
+      .route-button.warn {
+        background: linear-gradient(135deg, #fbbf24, var(--warn));
+        color: #451a03;
+        box-shadow: 0 10px 24px rgba(245, 158, 11, 0.22);
+      }
+
+      .ghost-button {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        border: 1px solid var(--line);
+      }
+
+      .route-button:hover,
+      .ghost-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .stack {
+        display: grid;
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .section {
+        margin-top: 26px;
+      }
+
+      .route-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .route-card {
+        padding: 18px;
+      }
+
+      .route-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .method {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .get {
+        background: rgba(34, 197, 94, 0.15);
+        color: #86efac;
+      }
+
+      .post {
+        background: rgba(56, 189, 248, 0.15);
+        color: #7dd3fc;
+      }
+
+      .patch {
+        background: rgba(245, 158, 11, 0.16);
+        color: #fcd34d;
+      }
+
+      .route-path {
+        margin: 12px 0 10px;
+        font-size: 1.08rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .route-actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .snippets {
+        margin-top: 18px;
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .snippet {
+        padding: 18px;
+      }
+
+      .snippet-title {
+        color: #bfdbfe;
+        margin-bottom: 12px;
+        font-weight: 700;
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #e2e8f0;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .footer {
+        margin-top: 22px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 860px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="hero-card">
+          <span class="eyebrow"><span class="eyebrow-dot"></span>Dry Cleaning Store API</span>
+          <h1>Open the routes, create orders, and track work in one place.</h1>
+          <p class="lede">
+            This tiny frontend is a route hub for the backend. The browser-openable endpoints are one click away,
+            and the write routes are shown with ready-to-use request examples.
+          </p>
+
+          <div class="metrics" aria-label="Key facts">
+            <div class="metric">
+              <div class="metric-label">Storage</div>
+              <div class="metric-value">In-memory</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Statuses</div>
+              <div class="metric-value">4-step workflow</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Pricing</div>
+              <div class="metric-value">Hardcoded config</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <h2>Open a route</h2>
+          <p>Use the buttons below to open the live API paths directly in your browser.</p>
+
+          <div class="route-tools">
+            <div class="field">
+              <label for="orderIdInput">Order ID for dynamic routes</label>
+              <input id="orderIdInput" value="ORD-EXAMPLE" aria-label="Order ID" />
+            </div>
+
+            <div class="buttons">
+              <a class="route-button" href="/">/</a>
+              <a class="route-button" href="/health">/health</a>
+              <a class="route-button secondary" href="/dashboard">/dashboard</a>
+              <a class="route-button secondary" href="/meta">/meta</a>
+              <a class="ghost-button" id="openOrders">/orders/:orderId</a>
+              <a class="ghost-button" id="openStatus">/orders/:orderId/status</a>
+            </div>
+
+            <div class="buttons">
+              <a class="route-button warn" href="#create-order">POST /orders</a>
+              <a class="route-button warn" href="#update-status">PATCH /orders/:orderId/status</a>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <h2>All paths</h2>
+        <p>Each card below shows the method, path, and a direct action.</p>
+
+        <div class="route-grid">
+          <article class="route-card">
+            <div class="route-top">
+              <span class="method get">GET</span>
+              <span class="helper">Status check</span>
+            </div>
+            <div class="route-path">/health</div>
+            <div class="route-body">Returns a simple health response for uptime checks.</div>
+            <div class="route-actions"><a class="route-button" href="/health">Open</a></div>
+          </article>
+
+          <article class="route-card">
+            <div class="route-top">
+              <span class="method get">GET</span>
+              <span class="helper">Dashboard</span>
+            </div>
+            <div class="route-path">/dashboard</div>
+            <div class="route-body">Shows total orders, revenue, and counts by status.</div>
+            <div class="route-actions"><a class="route-button secondary" href="/dashboard">Open</a></div>
+          </article>
+
+          <article class="route-card">
+            <div class="route-top">
+              <span class="method get">GET</span>
+              <span class="helper">Metadata</span>
+            </div>
+            <div class="route-path">/meta</div>
+            <div class="route-body">Returns the supported order statuses.</div>
+            <div class="route-actions"><a class="route-button secondary" href="/meta">Open</a></div>
+          </article>
+
+          <article class="route-card">
+            <div class="route-top">
+              <span class="method get">GET</span>
+              <span class="helper">List orders</span>
+            </div>
+            <div class="route-path">/orders</div>
+            <div class="route-body">Lists all orders and supports filters for status, customer name, and phone number.</div>
+            <div class="route-actions"><a class="route-button" href="/orders">Open</a></div>
+          </article>
+
+          <article class="route-card">
+            <div class="route-top">
+              <span class="method get">GET</span>
+              <span class="helper">Single order</span>
+            </div>
+            <div class="route-path">/orders/:orderId</div>
+            <div class="route-body">Use the input above to open a specific order path.</div>
+            <div class="route-actions"><button class="ghost-button" id="cardOpenOrder">Open</button></div>
+          </article>
+
+          <article class="route-card">
+            <div class="route-top">
+              <span class="method post">POST</span>
+              <span class="helper">Create order</span>
+            </div>
+            <div class="route-path">/orders</div>
+            <div class="route-body">Create a new order with customer details and garments.</div>
+            <div class="route-actions"><a class="route-button warn" href="#create-order">View request</a></div>
+          </article>
+
+          <article class="route-card">
+            <div class="route-top">
+              <span class="method patch">PATCH</span>
+              <span class="helper">Update status</span>
+            </div>
+            <div class="route-path">/orders/:orderId/status</div>
+            <div class="route-body">Move an order forward through the workflow.</div>
+            <div class="route-actions"><button class="ghost-button" id="cardOpenStatus">View request</button></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Request examples</h2>
+        <p>These snippets match the write routes and are ready to paste into curl or your API client.</p>
+
+        <div class="snippets">
+          <article class="snippet" id="create-order">
+            <div class="snippet-title">POST /orders</div>
+<pre>{
+  "customerName": "Amit Sharma",
+  "phoneNumber": "9876543210",
+  "garments": [
+    { "type": "shirt", "quantity": 3 },
+    { "type": "pants", "quantity": 2 }
+  ]
+}</pre>
+          </article>
+
+          <article class="snippet" id="update-status">
+            <div class="snippet-title">PATCH /orders/:orderId/status</div>
+<pre>{
+  "status": "PROCESSING"
+}</pre>
+          </article>
+        </div>
+      </section>
+
+      <div class="footer">Tip: replace the sample order ID with a real one after you create your first order.</div>
+    </main>
+
+    <script>
+      const orderIdInput = document.getElementById("orderIdInput");
+      const openOrders = document.getElementById("openOrders");
+      const openStatus = document.getElementById("openStatus");
+      const cardOpenOrder = document.getElementById("cardOpenOrder");
+      const cardOpenStatus = document.getElementById("cardOpenStatus");
+
+      function openRoute(template) {
+        const orderId = encodeURIComponent(orderIdInput.value.trim() || "ORD-EXAMPLE");
+        const path = template.replace(":orderId", orderId);
+        window.location.href = path;
+      }
+
+      openOrders.addEventListener("click", () => openRoute("/orders/:orderId"));
+      openStatus.addEventListener("click", () => openRoute("/orders/:orderId/status"));
+      cardOpenOrder.addEventListener("click", () => openRoute("/orders/:orderId"));
+      cardOpenStatus.addEventListener("click", () => document.getElementById("update-status").scrollIntoView({ behavior: "smooth", block: "start" }));
+    </script>
+  </body>
+</html>
