@@ -50,7 +50,7 @@ app.get("/orders/:orderId", (req, res) => {
   return res.json({ success: true, data: order });
 });
 
-app.patch("/orders/:orderId/status", (req, res) => {
+function handleOrderStatusChange(req, res) {
   const order = findOrderById(req.params.orderId);
   if (!order) {
     return buildErrorResponse(res, 404, "Order not found");
@@ -64,7 +64,10 @@ app.patch("/orders/:orderId/status", (req, res) => {
 
   const updatedOrder = updateOrderStatus(order.orderId, validation.status);
   return res.json({ success: true, data: updatedOrder });
-});
+}
+
+app.patch("/orders/:orderId/status", handleOrderStatusChange);
+app.put("/orders/:orderId/status", handleOrderStatusChange);
 
 app.get("/dashboard", (req, res) => {
   const dashboard = buildDashboard(listOrders());

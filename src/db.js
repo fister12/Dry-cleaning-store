@@ -57,6 +57,11 @@ function loadSQLite() {
       );
     `);
 
+    const columns = database.prepare(`PRAGMA table_info(orders)`).all().map((column) => column.name);
+    if (!columns.includes("estimatedDeliveryDate")) {
+      database.exec(`ALTER TABLE orders ADD COLUMN estimatedDeliveryDate TEXT`);
+    }
+
     sqliteDatabase = database;
     useInMemoryStore = false;
   } catch (error) {
