@@ -13,11 +13,22 @@ function isPositiveInteger(value) {
   return Number.isInteger(value) && value > 0;
 }
 
+function isValidDateString(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(`${value}T00:00:00Z`));
+}
+
+function addDaysISO(days) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
 function validateCreateOrderPayload(payload) {
   const errors = [];
   const customerName = normalizeText(payload.customerName);
   const phoneNumber = normalizePhone(payload.phoneNumber);
   const garments = payload.garments;
+  const estimatedDeliveryDate = normalizeText(payload.estimatedDeliveryDate);
 
   if (!customerName) {
     errors.push("customerName is required");
@@ -51,12 +62,17 @@ function validateCreateOrderPayload(payload) {
     });
   }
 
+  if (estimatedDeliveryDate && !isValidDateString(estimatedDeliveryDate)) {
+    errors.push("estimatedDeliveryDate must be a valid date in YYYY-MM-DD format");
+  }
+
   return {
     valid: errors.length === 0,
     errors,
     data: {
       customerName,
       phoneNumber,
+      estimatedDeliveryDate: estimatedDeliveryDate || addDaysISO(3),
       garments: Array.isArray(garments)
         ? garments.map((garment) => ({
             type: normalizeText(garment.type).toLowerCase(),
@@ -96,6 +112,7 @@ function createOrder(payload) {
       orderId: `ORD-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
       customerName: validation.data.customerName,
       phoneNumber: validation.data.phoneNumber,
+      estimatedDeliveryDate: validation.data.estimatedDeliveryDate,
       garments: lineItems,
       totalAmount,
       status: ORDER_STATUSES[0],
@@ -138,6 +155,7 @@ function matchesFilters(order, filters) {
   const status = normalizeText(filters.status).toUpperCase();
   const customerName = normalizeText(filters.customerName).toLowerCase();
   const phoneNumber = normalizePhone(filters.phoneNumber);
+  const garmentType = normalizeText(filters.garmentType).toLowerCase();
 
   if (status && order.status !== status) {
     return false;
@@ -148,6 +166,10 @@ function matchesFilters(order, filters) {
   }
 
   if (phoneNumber && !normalizePhone(order.phoneNumber).includes(phoneNumber)) {
+    return false;
+  }
+
+  if (garmentType && !order.garments.some((garment) => garment.type.toLowerCase().includes(garmentType))) {
     return false;
   }
 

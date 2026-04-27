@@ -8,16 +8,16 @@
       :root {
         color-scheme: light;
         --bg: #0b1220;
-        --panel: rgba(15, 23, 42, 0.84);
-        --panel-2: rgba(15, 23, 42, 0.68);
-        --line: rgba(148, 163, 184, 0.2);
+        --panel: rgba(15, 23, 42, 0.9);
+        --panel-soft: rgba(15, 23, 42, 0.72);
+        --line: rgba(148, 163, 184, 0.18);
         --text: #f8fafc;
         --muted: #cbd5e1;
         --accent: #22c55e;
         --accent-2: #38bdf8;
         --warn: #f59e0b;
         --danger: #fb7185;
-        --shadow: 0 24px 70px rgba(2, 6, 23, 0.45);
+        --shadow: 0 24px 70px rgba(2, 6, 23, 0.44);
       }
 
       * {
@@ -34,54 +34,45 @@
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--text);
         background:
-          radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.18), transparent 22%),
-          radial-gradient(circle at 85% 0%, rgba(34, 197, 94, 0.18), transparent 20%),
+          radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 24%),
+          radial-gradient(circle at top right, rgba(34, 197, 94, 0.18), transparent 20%),
           linear-gradient(180deg, #0f172a 0%, #111827 100%);
       }
 
       .shell {
-        width: min(1160px, calc(100% - 28px));
+        width: min(1180px, calc(100% - 24px));
         margin: 0 auto;
-        padding: 28px 0 44px;
+        padding: 24px 0 40px;
       }
 
       .hero {
         display: grid;
         gap: 18px;
-        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.75fr);
-      }
-
-      .hero-card,
-      .card,
-      .output,
-      .row,
-      .badge,
-      input,
-      textarea,
-      button {
-        border: 1px solid var(--line);
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.75fr);
+        align-items: start;
       }
 
       .hero-card,
       .card,
       .output {
         background: var(--panel);
+        border: 1px solid var(--line);
         border-radius: 24px;
         box-shadow: var(--shadow);
         backdrop-filter: blur(18px);
       }
 
       .hero-card {
-        padding: 30px;
+        padding: 28px;
       }
 
       .eyebrow {
         display: inline-flex;
-        gap: 10px;
         align-items: center;
+        gap: 10px;
         padding: 8px 12px;
         border-radius: 999px;
-        background: rgba(56, 189, 248, 0.13);
+        background: rgba(56, 189, 248, 0.14);
         color: #bae6fd;
         font-size: 12px;
         font-weight: 800;
@@ -94,12 +85,12 @@
         height: 8px;
         border-radius: 50%;
         background: var(--accent);
-        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.15);
+        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.14);
       }
 
       h1 {
         margin: 18px 0 12px;
-        font-size: clamp(2.4rem, 5vw, 4.4rem);
+        font-size: clamp(2.2rem, 4.5vw, 4.2rem);
         line-height: 0.98;
         letter-spacing: -0.05em;
       }
@@ -126,12 +117,12 @@
       }
 
       .mini-label {
+        margin-bottom: 8px;
+        color: #93c5fd;
         font-size: 12px;
+        font-weight: 800;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: #93c5fd;
-        margin-bottom: 8px;
-        font-weight: 800;
       }
 
       .mini-value {
@@ -148,6 +139,16 @@
         padding: 18px;
       }
 
+      .section {
+        margin-top: 18px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
       .card h2,
       .section h2 {
         margin: 0 0 8px;
@@ -157,7 +158,6 @@
 
       .card p,
       .section p,
-      .hint,
       .output-title,
       .small {
         margin: 0;
@@ -184,6 +184,7 @@
         border-radius: 999px;
         padding: 11px 15px;
         cursor: pointer;
+        border: 1px solid transparent;
         transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
       }
 
@@ -221,21 +222,59 @@
         transform: translateY(-1px);
       }
 
-      .section {
-        margin-top: 18px;
+      .field {
+        display: grid;
+        gap: 8px;
       }
 
-      .grid {
+      .field label {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #bfdbfe;
+      }
+
+      input,
+      select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(2, 6, 23, 0.35);
+        color: var(--text);
+        padding: 12px 14px;
+        outline: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: rgba(56, 189, 248, 0.85);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+      }
+
+      .form {
         display: grid;
-        gap: 16px;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .garment-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .garment-row {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 1.2fr 0.7fr auto;
+        align-items: end;
       }
 
       .output {
         margin-top: 14px;
         padding: 16px;
-        min-height: 170px;
-        background: var(--panel-2);
+        min-height: 160px;
+        background: var(--panel-soft);
       }
 
       .output-head {
@@ -267,67 +306,10 @@
         line-height: 1.6;
       }
 
-      .form {
+      .filters {
         display: grid;
-        gap: 14px;
-        margin-top: 14px;
-      }
-
-      .field {
-        display: grid;
-        gap: 8px;
-      }
-
-      .field label {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: #bfdbfe;
-        font-weight: 800;
-      }
-
-      input,
-      textarea {
-        width: 100%;
-        border-radius: 14px;
-        background: rgba(2, 6, 23, 0.35);
-        color: var(--text);
-        padding: 12px 14px;
-        outline: none;
-      }
-
-      textarea {
-        min-height: 96px;
-        resize: vertical;
-      }
-
-      input:focus,
-      textarea:focus {
-        border-color: rgba(56, 189, 248, 0.85);
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
-      }
-
-      .garment-row {
-        display: grid;
-        grid-template-columns: 1.2fr 0.6fr auto;
-        gap: 10px;
-        align-items: end;
-      }
-
-      .garment-list {
-        display: grid;
-        gap: 10px;
-      }
-
-      .row-actions {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .muted-link {
-        color: #93c5fd;
-        text-decoration: none;
+        gap: 12px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .footer {
@@ -336,20 +318,21 @@
         font-size: 14px;
       }
 
-      @media (max-width: 920px) {
+      @media (max-width: 980px) {
         .hero {
           grid-template-columns: 1fr;
         }
 
-        .mini-grid {
+        .mini-grid,
+        .filters {
           grid-template-columns: 1fr;
         }
       }
 
       @media (max-width: 640px) {
         .shell {
-          width: min(100% - 18px, 1160px);
-          padding: 16px 0 30px;
+          width: min(100% - 16px, 1180px);
+          padding: 16px 0 28px;
         }
 
         .garment-row {
@@ -363,31 +346,31 @@
       <section class="hero">
         <div class="hero-card">
           <span class="eyebrow"><span class="dot"></span>Dry Cleaning Store</span>
-          <h1>Fast UI for health, dashboard, orders, and create order.</h1>
+          <h1>Clear, consistent controls for the dry cleaning API.</h1>
           <p class="lede">
-            Use the panels below to call the live backend, inspect responses, and create new orders without leaving the page.
+            Use the panels below to check health, view the dashboard, search orders, create a new order, and update its status.
           </p>
 
           <div class="mini-grid">
             <div class="mini">
               <div class="mini-label">Storage</div>
-              <div class="mini-value">SQLite</div>
+              <div class="mini-value">SQLite + fallback</div>
             </div>
             <div class="mini">
               <div class="mini-label">API</div>
               <div class="mini-value">Express</div>
             </div>
             <div class="mini">
-              <div class="mini-label">Workflow</div>
-              <div class="mini-value">4 statuses</div>
+              <div class="mini-label">Status flow</div>
+              <div class="mini-value">PUT /orders/:orderId/status</div>
             </div>
           </div>
         </div>
 
         <div class="side">
           <article class="card">
-            <h2>Quick routes</h2>
-            <p>Open the direct endpoints or jump to the live panels below.</p>
+            <h2>Quick links</h2>
+            <p>Jump to a section or open the raw endpoint directly.</p>
             <div class="actions">
               <a class="button primary" href="#health">Health</a>
               <a class="button blue" href="#dashboard">Dashboard</a>
@@ -397,16 +380,16 @@
           </article>
 
           <article class="card">
-            <h2>Sample order ID</h2>
-            <p>Use this field to open a specific order endpoint if you already have one.</p>
+            <h2>Order shortcuts</h2>
+            <p>Paste a real order ID to open the order and status routes.</p>
             <div class="form">
               <div class="field">
                 <label for="orderIdInput">Order ID</label>
                 <input id="orderIdInput" value="ORD-EXAMPLE" />
               </div>
               <div class="actions">
-                <a class="button" id="openOrderBtn" href="/orders/ORD-EXAMPLE">Open /orders/:orderId</a>
-                <a class="button" id="openStatusBtn" href="/orders/ORD-EXAMPLE/status">Open status route</a>
+                <a class="button" id="openOrderBtn" href="/orders/ORD-EXAMPLE">Open order</a>
+                <a class="button" id="openStatusBtn" href="/orders/ORD-EXAMPLE/status">Open status</a>
               </div>
             </div>
           </article>
@@ -418,7 +401,7 @@
           <div class="output-head">
             <div>
               <h2>Health</h2>
-              <p>Check if the API is running.</p>
+              <p>Check whether the API is available.</p>
             </div>
             <span class="badge">GET /health</span>
           </div>
@@ -430,7 +413,7 @@
               <span class="output-title">Response</span>
               <span class="small" id="healthStatus">Idle</span>
             </div>
-            <pre id="healthOutput">Click the button to load /health.</pre>
+            <pre id="healthOutput">Click to load /health.</pre>
           </div>
         </article>
 
@@ -438,7 +421,7 @@
           <div class="output-head">
             <div>
               <h2>Dashboard</h2>
-              <p>See total orders, revenue, and counts by status.</p>
+              <p>See totals, revenue, and orders by status.</p>
             </div>
             <span class="badge">GET /dashboard</span>
           </div>
@@ -450,7 +433,7 @@
               <span class="output-title">Response</span>
               <span class="small" id="dashboardStatus">Idle</span>
             </div>
-            <pre id="dashboardOutput">Click the button to load /dashboard.</pre>
+            <pre id="dashboardOutput">Click to load /dashboard.</pre>
           </div>
         </article>
 
@@ -458,27 +441,90 @@
           <div class="output-head">
             <div>
               <h2>Orders</h2>
-              <p>List orders and optionally filter by status, customer, or phone.</p>
+              <p>Filter by status, customer name, garment type, or phone number.</p>
             </div>
             <span class="badge">GET /orders</span>
           </div>
           <div class="form">
-            <div class="field">
-              <label for="statusFilter">Status</label>
-              <input id="statusFilter" placeholder="RECEIVED, PROCESSING, READY, DELIVERED" />
+            <div class="filters">
+              <div class="field">
+                <label for="statusFilter">Status</label>
+                <input id="statusFilter" placeholder="RECEIVED" />
+              </div>
+              <div class="field">
+                <label for="nameFilter">Customer name</label>
+                <input id="nameFilter" placeholder="Amit" />
+              </div>
+              <div class="field">
+                <label for="phoneFilter">Phone number</label>
+                <input id="phoneFilter" placeholder="9876543210" />
+              </div>
             </div>
             <div class="field">
-              <label for="nameFilter">Customer name</label>
-              <input id="nameFilter" placeholder="Amit" />
+              <label for="garmentFilter">Garment type</label>
+              <input id="garmentFilter" placeholder="shirt" />
+            </div>
+            <div class="actions">
+              <button class="button amber" id="ordersBtn" type="button">Load orders</button>
+              <a class="button" href="/orders">Open raw route</a>
+            </div>
+          </div>
+          <div class="output">
+            <div class="output-head">
+              <span class="output-title">Response</span>
+              <span class="small" id="ordersStatus">Idle</span>
+            </div>
+            <pre id="ordersOutput">Click to load /orders.</pre>
+          </div>
+        </article>
+
+        <article class="card" id="create-order">
+          <div class="output-head">
+            <div>
+              <h2>Create order</h2>
+              <p>Submit a new dry cleaning order.</p>
+            </div>
+            <span class="badge">POST /orders</span>
+          </div>
+          <form class="form" id="createOrderForm">
+            <div class="field">
+              <label for="customerName">Customer name</label>
+              <input id="customerName" placeholder="Amit Sharma" required />
             </div>
             <div class="field">
+              <label for="phoneNumber">Phone number</label>
+              <input id="phoneNumber" placeholder="9876543210" required />
+            </div>
+            <div class="field">
+              <label for="deliveryDate">Estimated delivery date</label>
+              <input id="deliveryDate" type="date" />
+            </div>
+            <div>
+              <div class="output-head" style="margin-bottom: 10px;">
+                <span class="output-title">Garments</span>
+                <button class="button" id="addGarmentBtn" type="button">Add garment</button>
+              </div>
+              <div class="garment-list" id="garmentList"></div>
+            </div>
+            <div class="actions">
+              <button class="button red" type="submit">Create order</button>
+              <button class="button" id="fillExampleBtn" type="button">Fill example</button>
+            </div>
+          </form>
+          <div class="output">
+            <div class="output-head">
+              <span class="output-title">Response</span>
+              <span class="small" id="createStatus">Idle</span>
+            </div>
+            <pre id="createOutput">Submit the form to create an order.</pre>
+          </div>
         </article>
 
         <article class="card" id="update-status">
           <div class="output-head">
             <div>
               <h2>Update status</h2>
-              <p>Change an order status with the new PUT route.</p>
+              <p>Change an order status using the PUT route.</p>
             </div>
             <span class="badge">PUT /orders/:orderId/status</span>
           </div>
@@ -491,9 +537,9 @@
               <label for="statusValue">New status</label>
               <input id="statusValue" placeholder="PROCESSING" required />
             </div>
-            <div class="row-actions">
+            <div class="actions">
               <button class="button blue" type="submit">Update status</button>
-              <a class="button" href="/meta">See allowed statuses</a>
+              <a class="button" href="/meta">Allowed statuses</a>
             </div>
           </form>
           <div class="output">
@@ -501,74 +547,15 @@
               <span class="output-title">Response</span>
               <span class="small" id="statusUpdateState">Idle</span>
             </div>
-            <pre id="statusUpdateOutput">Submit the form to call the PUT route.</pre>
-          </div>
-        </article>
-              <label for="phoneFilter">Phone number</label>
-              <input id="phoneFilter" placeholder="9876543210" />
-            </div>
-            <div class="row-actions">
-              <button class="button amber" id="ordersBtn" type="button">Load orders</button>
-              <a class="button" href="/orders">Open raw route</a>
-            </div>
-          </div>
-          <div class="output">
-            <div class="output-head">
-              <span class="output-title">Response</span>
-              <span class="small" id="ordersStatus">Idle</span>
-            </div>
-            <pre id="ordersOutput">Click the button to load /orders.</pre>
-          </div>
-        </article>
-
-        <article class="card" id="create-order">
-          <div class="output-head">
-            <div>
-              <h2>Create order</h2>
-              <p>Submit a new dry cleaning order with garments and quantities.</p>
-            </div>
-            <span class="badge">POST /orders</span>
-          </div>
-          <form class="form" id="createOrderForm">
-            <div class="field">
-              <label for="customerName">Customer name</label>
-              <input id="customerName" required placeholder="Amit Sharma" />
-            </div>
-            <div class="field">
-              <label for="phoneNumber">Phone number</label>
-              <input id="phoneNumber" required placeholder="9876543210" />
-            </div>
-
-            <div>
-              <div class="output-head" style="margin-bottom: 10px;">
-                <span class="output-title">Garments</span>
-                <button class="button" id="addGarmentBtn" type="button">Add garment</button>
-              </div>
-              <div class="garment-list" id="garmentList"></div>
-            </div>
-
-            <div class="row-actions">
-              <button class="button red" type="submit">Create order</button>
-              <button class="button" id="fillExampleBtn" type="button">Fill example</button>
-            </div>
-          </form>
-          <div class="output">
-            <div class="output-head">
-              <span class="output-title">Response</span>
-              <span class="small" id="createStatus">Idle</span>
-            </div>
-            <pre id="createOutput">Submit the form to post a new order.</pre>
+            <pre id="statusUpdateOutput">Submit the form to call PUT /orders/:orderId/status.</pre>
           </div>
         </article>
       </section>
 
-      <div class="footer">
-        Tip: after creating an order, copy the returned order ID and use the order route buttons above.
-      </div>
+      <div class="footer">Tip: create an order first, then the created order ID is copied into the status form automatically.</div>
     </main>
 
     <script>
-      const apiBase = "";
       const orderIdInput = document.getElementById("orderIdInput");
       const openOrderBtn = document.getElementById("openOrderBtn");
       const openStatusBtn = document.getElementById("openStatusBtn");
@@ -601,6 +588,7 @@
         status: document.getElementById("statusFilter"),
         customerName: document.getElementById("nameFilter"),
         phoneNumber: document.getElementById("phoneFilter"),
+        garmentType: document.getElementById("garmentFilter"),
       };
 
       const exampleGarments = [
@@ -618,21 +606,26 @@
       }
 
       async function requestJSON(url, options = {}) {
-        const response = await fetch(apiBase + url, {
+        const response = await fetch(url, {
           headers: { "Content-Type": "application/json", ...(options.headers || {}) },
           ...options,
         });
+
         const text = await response.text();
-        let payload;
-        try {
-          payload = text ? JSON.parse(text) : {};
-        } catch {
-          payload = text;
+        let payload = {};
+        if (text) {
+          try {
+            payload = JSON.parse(text);
+          } catch {
+            payload = text;
+          }
         }
+
         if (!response.ok) {
           const message = payload && payload.message ? payload.message : `Request failed with status ${response.status}`;
           throw new Error(message);
         }
+
         return payload;
       }
 
@@ -663,16 +656,14 @@
 
       function ensureInitialGarments() {
         if (!garmentList.children.length) {
-          garmentList.appendChild(garmentRow(exampleGarments[0]));
-          garmentList.appendChild(garmentRow(exampleGarments[1]));
+          exampleGarments.forEach((garment) => garmentList.appendChild(garmentRow(garment)));
         }
       }
 
       async function loadHealth() {
         setResult("health", "Loading", "Fetching /health...");
         try {
-          const payload = await requestJSON("/health");
-          setResult("health", "OK", payload);
+          setResult("health", "OK", await requestJSON("/health"));
         } catch (error) {
           setResult("health", "Error", error.message);
         }
@@ -681,8 +672,7 @@
       async function loadDashboard() {
         setResult("dashboard", "Loading", "Fetching /dashboard...");
         try {
-          const payload = await requestJSON("/dashboard");
-          setResult("dashboard", "OK", payload);
+          setResult("dashboard", "OK", await requestJSON("/dashboard"));
         } catch (error) {
           setResult("dashboard", "Error", error.message);
         }
@@ -693,11 +683,12 @@
         if (filters.status.value.trim()) params.set("status", filters.status.value.trim());
         if (filters.customerName.value.trim()) params.set("customerName", filters.customerName.value.trim());
         if (filters.phoneNumber.value.trim()) params.set("phoneNumber", filters.phoneNumber.value.trim());
+        if (filters.garmentType.value.trim()) params.set("garmentType", filters.garmentType.value.trim());
+
         const query = params.toString() ? `?${params.toString()}` : "";
         setResult("orders", "Loading", `Fetching /orders${query}...`);
         try {
-          const payload = await requestJSON(`/orders${query}`);
-          setResult("orders", "OK", payload);
+          setResult("orders", "OK", await requestJSON(`/orders${query}`));
         } catch (error) {
           setResult("orders", "Error", error.message);
         }
@@ -705,6 +696,7 @@
 
       async function createOrder(event) {
         event.preventDefault();
+
         const garments = Array.from(garmentList.children)
           .map((row) => ({
             type: row.querySelector(".garment-type").value.trim(),
@@ -716,6 +708,7 @@
           customerName: document.getElementById("customerName").value.trim(),
           phoneNumber: document.getElementById("phoneNumber").value.trim(),
           garments,
+          estimatedDeliveryDate: document.getElementById("deliveryDate").value || undefined,
         };
 
         setResult("create", "Submitting", body);
@@ -724,8 +717,9 @@
             method: "POST",
             body: JSON.stringify(body),
           });
+
           setResult("create", "Created", payload);
-          const orderId = payload && payload.data && payload.data.orderId ? payload.data.orderId : "ORD-EXAMPLE";
+          const orderId = payload?.data?.orderId || "ORD-EXAMPLE";
           orderIdInput.value = orderId;
           document.getElementById("statusOrderId").value = orderId;
           syncOrderLinks();
